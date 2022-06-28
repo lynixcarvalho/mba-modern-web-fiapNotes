@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Note } from 'src/app/services/@types/note';
+import { NoteService } from 'src/app/services/note.service';
 
 @Component({
   selector: 'app-list-notes',
@@ -9,36 +11,30 @@ export class ListNotesComponent implements OnInit {
 
   title = "Título da nota";
 
-  notes = [
-    {
-      id: 1,
-      date: new Date(),
-      text: "Um texto qualquer",
-      urgent: true
-    },
-    {
-      id: 2,
-      date: new Date(),
-      text: "Um texto qualquer 2",
-      urgent: false
-    },
-    {
-      id: 3,
-      date: new Date(),
-      text: "Um texto qualquer 3",
-      urgent: false
-    },
-    {
-      id: 4,
-      date: new Date(),
-      text: "Um texto qualquer 4",
-      urgent: false
-    }
-  ]
+  notes = [] as Note[];
 
-  constructor() { }
+  // injetando a dependência do service
+  constructor(private noteService: NoteService) { }
 
+  // método do ciclo de vida do componente
   ngOnInit(): void {
+    //this.notes = this.noteService.getNotes();
+    this.getApiNotes();
+  }
+
+  getApiNotes(){
+    this.noteService.getNotes().subscribe({
+      next: (apiNotes) => this.notes = apiNotes,
+      error: (error) => console.error(error),
+      //complete: () => alert("Deu tudo certo")
+    });
+  }
+
+  removeNote(noteId: number){
+    //this.notes = this.noteService.removeNote(noteId);
+    this.noteService.removeNote(noteId).subscribe(
+      () => this.getApiNotes()
+    );
   }
 
 }
