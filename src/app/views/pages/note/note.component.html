@@ -3,6 +3,6 @@
     <p>Data e hora: {{noteProp.date | date: "dd/MM/yyyy hh:mm"}}</p>  
     <p>Texto da nota: {{noteProp.text}}</p>
     <span *ngIf="noteProp.urgent" class="material-icons" id="priority">priority_high</span>
-    <span class="material-icons" id="edit"> mode_edit </span>
+    <span class="material-icons" id="edit" (click)="updateNote()"> mode_edit </span>
     <span class="material-icons" (click)="removeNote()"> delete_forever </span>
 </article>

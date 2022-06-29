@@ -11,7 +11,10 @@ export class NoteService {
   private apiUrl: string;
 
   private newNoteSource = new Subject<Note>();
+  private editNoteSource = new Subject<Note>();
+
   newNoteProvider = this.newNoteSource.asObservable();
+  editNoteProvider = this.editNoteSource.asObservable();
 
   constructor(private http: HttpClient) { 
     //this.apiUrl = "https://fiap-notes-api.herokuapp.com";
@@ -45,24 +48,35 @@ export class NoteService {
     }
   ]
 
-  notifyNewNoteAdded(note: Note){
-    this.newNoteSource.next(note);
+  // [C]reate note
+  postNotes(textNote: string){
+    return this.http.post<Note>(`${this.apiUrl}/notes`, {text: textNote});
   }
 
+  // [R]ead notes
   getNotes(){
     // return this.notes;
     return this.http.get<Note[]>(`${this.apiUrl}/notes`);
   }
 
+  // [U]pdate note
+  updateNote(noteId: number, textNote: string){
+    return this.http.put<Note>(`${this.apiUrl}/notes/${noteId}`, {text: textNote});
+  }
+  // [D]elete note
   removeNote(noteId: number){
     //alert("Nota sendo apagada: " + noteId);
-    //this.notes = this.notes.filter(note => note.id !== noteId);
-    //return this.notes;
     return this.http.delete(`${this.apiUrl}/notes/${noteId}`);
   }
 
-  postNotes(textNote: string){
-    return this.http.post<Note>(`${this.apiUrl}/notes`, {text: textNote});
+  // Notify that a new note was created
+  notifyNewNoteAdded(note: Note){
+    this.newNoteSource.next(note);
+  }
+
+  // Notify that a note is under edition
+  notifyEditNote(note: Note){
+    this.editNoteSource.next(note);
   }
 
 }

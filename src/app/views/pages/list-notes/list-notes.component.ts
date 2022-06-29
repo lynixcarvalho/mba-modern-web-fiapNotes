@@ -26,7 +26,6 @@ export class ListNotesComponent implements OnInit {
 
   // método do ciclo de vida do componente
   ngOnInit(): void {
-    //this.notes = this.noteService.getNotes();
     this.getApiNotes();
   }
 
@@ -39,10 +38,16 @@ export class ListNotesComponent implements OnInit {
   }
 
   removeNote(noteId: number){
-    //this.notes = this.noteService.removeNote(noteId);
     this.noteService.removeNote(noteId).subscribe(
       () => this.getApiNotes()
     );
   }
+
+  updateNote(note: Note){
+    this.noteService.notifyEditNote(note);
+    // this.noteService.updateNote(noteId, textNote).subscribe(
+    //    () => this.getApiNotes()
+    //  );
+   }
 
 }

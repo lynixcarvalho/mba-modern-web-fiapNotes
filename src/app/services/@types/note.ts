@@ -3,4 +3,5 @@ export interface Note {
     text: string;
     date: Date;
     urgent: boolean;
+    isEditing: boolean;
 }
