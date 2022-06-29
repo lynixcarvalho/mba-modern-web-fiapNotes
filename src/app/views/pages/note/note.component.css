@@ -36,3 +36,8 @@ article {
     left: 5px;
     width: fit-content;
   }
+
+  #edit {
+    right: 40px;
+    width: fit-content;
+  }
